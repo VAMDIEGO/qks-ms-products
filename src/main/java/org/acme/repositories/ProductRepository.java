@@ -28,4 +28,14 @@ public class ProductRepository {
     public void delete(Product product) {
         em.remove(product);
     }
+
+    @Transactional
+    public Product find(Long Id){
+        return em.find(Product.class, Id);
+    }
+    @Transactional
+    public void update(Product p){
+        em.merge(p);
+    }
+
 }

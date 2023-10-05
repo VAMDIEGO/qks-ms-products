@@ -22,6 +22,12 @@ public class ProductController {
         return pr.list();
     }
 
+    @GET
+    @Path("/{Id}")
+    public Product getById(@QueryParam("Id") Long Id) {
+        return pr.find(Id);
+    }
+
     @POST
     public Response add(Product p) {
         pr.create(p);
@@ -31,6 +37,16 @@ public class ProductController {
     @DELETE
     public Response delete(Product p) {
         pr.delete(p);
+        return Response.ok().build();
+    }
+
+    @PUT
+    public Response update(Product p) {
+        Product product = pr.find(p.getId());
+        product.setCode(p.getCode());
+        product.setName(p.getName());
+        product.setDescription(p.getDescription());
+        pr.update(product);
         return Response.ok().build();
     }
 }
