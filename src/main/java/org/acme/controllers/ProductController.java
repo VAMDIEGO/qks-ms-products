@@ -24,7 +24,7 @@ public class ProductController {
 
     @GET
     @Path("/{Id}")
-    public Product getById(@QueryParam("Id") Long Id) {
+    public Product getById(@PathParam("Id") Long Id) {
         return pr.find(Id);
     }
 
@@ -35,8 +35,9 @@ public class ProductController {
     }
 
     @DELETE
-    public Response delete(Product p) {
-        pr.delete(p);
+    @Path("/{Id}")
+    public Response delete(@PathParam("Id") Long Id) {
+        pr.delete(pr.find(Id));
         return Response.ok().build();
     }
 
