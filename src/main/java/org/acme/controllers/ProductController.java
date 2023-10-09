@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.acme.entities.Product;
 import org.acme.repositories.ProductRepository;
+import org.acme.repositories.ProductRepositoryJPA;
 
 import java.util.List;
 
@@ -15,39 +16,39 @@ import java.util.List;
 public class ProductController {
 
     @Inject
-    ProductRepository pr;
+    ProductRepositoryJPA pr;
 
     @GET
     public List<Product> list() {
-        return pr.list();
+        return pr.findAll();
     }
 
     @GET
     @Path("/{Id}")
     public Product getById(@PathParam("Id") Long Id) {
-        return pr.find(Id);
+        return pr.findById(Id).get();
     }
 
     @POST
     public Response add(Product p) {
-        pr.create(p);
+        pr.save(p);
         return Response.ok().build();
     }
 
     @DELETE
     @Path("/{Id}")
     public Response delete(@PathParam("Id") Long Id) {
-        pr.delete(pr.find(Id));
+        pr.delete(pr.findById(Id).get());
         return Response.ok().build();
     }
 
     @PUT
     public Response update(Product p) {
-        Product product = pr.find(p.getId());
+        Product product = pr.findById(p.getId()).get();
         product.setCode(p.getCode());
         product.setName(p.getName());
         product.setDescription(p.getDescription());
-        pr.update(product);
+        pr.save(product);
         return Response.ok().build();
     }
 }
